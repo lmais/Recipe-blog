@@ -38,10 +38,10 @@
                 {{ form.recipe_picture.label() }}
                 {{ form.recipe_picture(class="form-control-file") }}
                 {% if form.recipe_picture.errors %}
-                {% for error in form.recipe_picture.errors %}
-                </br>
-                <span class="text-danger"> {{ error }} </span></br>
-                {% endfor %}
+                    {% for error in form.recipe_picture.errors %}
+                        </br>
+                        <span class="text-danger"> {{ error }} </span></br>
+                    {% endfor %}
                 {% endif %}
             </div>
         </fieldset>

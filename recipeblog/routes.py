@@ -93,14 +93,15 @@ def account():
         'static', filename='profile_pics/' + current_user.image)
     return render_template('account.html', title='Account', image_file=image_file, form=form)
 
-def save_recipe_picture(form_picture):
+def save_recipe_picture(recipe_picture):
+    print('SAVE RECIPE PICTURE WAS CALLED')
     random_hex = secrets.token_hex(8)
-    _, f_ext = os.path.splitext(form_picture.filename)
+    _, f_ext = os.path.splitext(recipe_picture.filename)
     picture_fn = random_hex + f_ext
     picture_path = os.path.join(
         app.root_path, 'static/recipe_pics', picture_fn)
     output_size = (125, 125)
-    i = Image.open(form_picture)
+    i = Image.open(recipe_picture)
     i.thumbnail(output_size)
     i.save(picture_path)
     return picture_fn
@@ -110,21 +111,20 @@ def save_recipe_picture(form_picture):
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
+        post_image = 'default_image.jpg'
         if form.recipe_picture.data:
-            flash('Your post had an image!', 'success') #need to look up proper error logging
             picture_file = save_recipe_picture(form.recipe_picture.data)
             post_image = picture_file
-            post = Post(title=form.title.data,
-                        content=form.content.data, author=current_user, image=post_image)
-            app.logger('test')
-        else:
-            post = Post(title=form.title.data,
-                    content=form.content.data, author=current_user)
-            app.logger('test2')
+            print('TEST OF POST IMAGE')
+        post = Post(title=form.title.data,
+                    content=form.content.data, author=current_user, image=post_image)
+        #app.logger('test')
         db.session.add(post)
         db.session.commit()
+        print('TEST OF POST IMAGE')
         flash('Your post has been created!', 'success')
         return redirect(url_for('home'))
+     
     return render_template('create_post.html', title='New Post', form=form, legend='New Post')
 
 
@@ -140,7 +140,9 @@ def update_post(post_id):
     if post.author != current_user:
         abort(403)
     form = PostForm()
-    if form.validate_on_submit():
+    if form.validate_on_submit(): 
+        picture_file = save_recipe_picture(form.recipe_picture.data)
+        post.image = picture_file
         post.title = form.title.data
         post.content = form.content.data
         db.session.commit()
