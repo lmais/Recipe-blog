@@ -1,0 +1,3 @@
+added optional Category field
+	- to later use to pull recipes by category
+still working on the post image field, it does not save any different images, only keeps the default

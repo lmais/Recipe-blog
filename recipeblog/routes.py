@@ -117,7 +117,7 @@ def new_post():
             post_image = picture_file
             print('TEST OF POST IMAGE')
         post = Post(title=form.title.data,
-                    content=form.content.data, author=current_user, image=post_image)
+                    content=form.content.data, author=current_user, image=post_image, category=form.category.data)
         #app.logger('test')
         db.session.add(post)
         db.session.commit()
