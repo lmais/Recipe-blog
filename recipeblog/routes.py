@@ -6,12 +6,12 @@ from flask_login import login_user, current_user, logout_user, login_required
 import secrets
 import os
 from PIL import Image
-
+from sqlalchemy import desc
 
 @ app.route("/")
 @ app.route("/home")
 def home():
-    posts = Post.query.all()
+    posts = Post.query.order_by(Post.id.desc()).all()
     return render_template('home.html', posts=posts)
 
 
@@ -115,13 +115,12 @@ def new_post():
         if form.recipe_picture.data:
             picture_file = save_recipe_picture(form.recipe_picture.data)
             post_image = picture_file
-            print('TEST OF POST IMAGE')
+            print('goddammit')
         post = Post(title=form.title.data,
                     content=form.content.data, author=current_user, image=post_image, category=form.category.data)
         #app.logger('test')
         db.session.add(post)
         db.session.commit()
-        print('TEST OF POST IMAGE')
         flash('Your post has been created!', 'success')
         return redirect(url_for('home'))
      
