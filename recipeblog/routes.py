@@ -115,7 +115,6 @@ def new_post():
         if form.recipe_picture.data:
             picture_file = save_recipe_picture(form.recipe_picture.data)
             post_image = picture_file
-            print('goddammit')
         post = Post(title=form.title.data,
                     content=form.content.data, author=current_user, image=post_image, category=form.category.data)
         #app.logger('test')
