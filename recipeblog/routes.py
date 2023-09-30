@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect, request, abort
 from recipeblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
-from recipeblog.models import User, Post
+from recipeblog.models import User, Post, Favorite
 from recipeblog import app, db, bcrypt, logging
 from flask_login import login_user, current_user, logout_user, login_required
 import secrets
@@ -117,7 +117,6 @@ def new_post():
             post_image = picture_file
         post = Post(title=form.title.data,
                     content=form.content.data, author=current_user, image=post_image, category=form.category.data)
-        #app.logger('test')
         db.session.add(post)
         db.session.commit()
         flash('Your post has been created!', 'success')
@@ -161,3 +160,23 @@ def delete_post(post_id):
     db.session.commit()
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('home'))
+
+@app.route("/post/<int:post_id>/favorite", methods=['GET','POST'])
+@login_required
+def favorite_post(post_id):
+    f = Favorite(post_id=post_id, user_id=current_user.id)
+    db.session.add(f)
+    db.session.commit()
+    flash('This post has been added to your favorites list!', 'success')
+    return redirect(url_for('home'))
+
+@ app.route("/favorites")
+@login_required
+def favorites():   
+    user_favorites = db.session.query(Favorite).filter(Favorite.user_id == current_user.id).all()
+    fav_post_ids = []
+    for f in user_favorites:
+        fav_post_ids.append(f.post_id)
+    fav_posts = db.session.query(Post).filter(Post.id.in_(fav_post_ids)).order_by(Post.id.desc())
+  
+    return render_template('favorites.html', posts=fav_posts)

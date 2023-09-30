@@ -37,6 +37,9 @@ class Favorite(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False) 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    #posts = db.relationship('Post', backref='post', lazy='joined')
+    #users = db.relationship('User', backref='user', lazy='joined')
 
     def __repr__(self):
-        return f"Post('{self.title}','{self.date_posted}')"
+        return f"Post('{self.user_id}','{self.post_id}')"
+

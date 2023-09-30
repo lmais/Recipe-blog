@@ -1,3 +1,8 @@
-added optional Category field
-	- to later use to pull recipes by category
-still working on the post image field, it does not save any different images, only keeps the default
+
+added favorite model, added button to template, and added to routes, 
+got addition to favorites list working
+added html template for favorites page, it will be like home page but filter on posts from that user's favorites
+
+need to add favorites button to nav bar that is visible if logged in
+
+need to finish the query in the routes
