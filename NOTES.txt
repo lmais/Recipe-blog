@@ -1,3 +1,8 @@
+added optional Category field
+	- to later use to pull recipes by category
+fixed post image
+	- to later have all posts just be the image at first like Pinterest
+
 
 added favorite model, added button to template, and added to routes, 
 got addition to favorites list working
