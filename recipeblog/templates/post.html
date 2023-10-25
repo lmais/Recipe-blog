@@ -2,31 +2,34 @@
 {% block content %}
 <article class="media content-section">
     <form method="POST" action="" >
-        <img class="rounded-circle article-img"
-            src=" {{ url_for('static', filename='profile_pics/' + post.author.image)  }}">
+        <div class="mb-5">
+            <img class="rounded" src=" {{ url_for('static', filename='recipe_pics/' + post.image)  }}" width="400" ,height="400">
+        </div>
+        <div>
+        <img class="rounded-circle article-img" src=" {{ url_for('static', filename='profile_pics/' + post.author.image)  }}">
+        </div>
         <div class="media-body">
             <div class="article-metadata">
                 <a class="mr-2" href="#">{{ post.author.username }}</a>
                 <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
                 <div>
                     {% if current_user.is_authenticated %}
-                    <a class="btn btn-secondary btn-sm m-1" href="{{ url_for('favorite_post', post_id=post.id)}}">Favorite</a>
+                    <a class="btn btn-warning btn-sm m-1" href="{{ url_for('favorite_post', post_id=post.id)}}">Favorite</a>
                             
                     {% endif %}
                 
                 {% if post.author == current_user %}
                 
-                    <a class="btn btn-secondary btn-sm m-1" href="{{ url_for('update_post', post_id=post.id)}}">Update</a>
+                    <a class="btn btn-warning btn-sm m-1" href="{{ url_for('update_post', post_id=post.id)}}">Update</a>
                     <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal"
                         data-target="#deleteModal">Delete</button>
                 </div>
                 {% endif %}
             </div>
-            <h2 class="article-title">{{ post.title }}</h2>
-            <img class="rounded-circle article-img" src=" {{ url_for('static', filename='recipe_pics/' + post.image)  }}">
-
+            
+                        <h2 class="article-title">{{ post.title }}</h2>
             <p class="article-content">{{ post.content }}</p>
-            <p class="article-content">{{ post.category }}</p>
+            
         </div>
     </article>
 

@@ -26,12 +26,11 @@ class Post(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False,
                             default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
-    image = db.Column(db.String(20), nullable=False, default='default_image.jpg')
-    category = db.Column(db.String(100), nullable=False)
+    image = db.Column(db.String(20), nullable=False, default='default2.jpg')
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
-        return f"Post('{self.title}','{self.date_posted}', '{self.image}','{self.category}')"
+        return f"Post('{self.title}','{self.date_posted}', '{self.image}')"
 
 class Favorite(db.Model):
     id = db.Column(db.Integer, primary_key=True)

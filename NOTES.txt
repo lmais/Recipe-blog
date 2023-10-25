@@ -1,5 +1,4 @@
-added optional Category field
-	- to later use to pull recipes by category
+
 fixed post image
 	- to later have all posts just be the image at first like Pinterest
 
@@ -8,6 +7,8 @@ added favorite model, added button to template, and added to routes,
 got addition to favorites list working
 added html template for favorites page, it will be like home page but filter on posts from that user's favorites
 
-need to add favorites button to nav bar that is visible if logged in
+______________________
 
-need to finish the query in the routes
+decide what to do with categories/search
+
+
