@@ -30,8 +30,13 @@ The project has the following structure:
 │   ├── models.py        # Database models
 
 │   ├── routes.py        # Application routes
+
 │   ├── templates        # HTML templates
+
 │   └── __init__.py      # Application initialization
+
 ├── config.py            # Configuration settings
+
 ├── requirements.txt     # Project dependencies
+
 └── run.py               # Entry point for running the application
