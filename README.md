@@ -13,7 +13,7 @@ cd Recipe-blog
 
 Install the dependencies
 pip install -r requirements.txt
-
+ 
 Set up the database:
 Create a PostgreSQL database and update the config.py file with your database connection details.
 
@@ -26,7 +26,9 @@ Project Structure
 The project has the following structure:
 
 ├── app
+
 │   ├── models.py        # Database models
+
 │   ├── routes.py        # Application routes
 │   ├── templates        # HTML templates
 │   └── __init__.py      # Application initialization
