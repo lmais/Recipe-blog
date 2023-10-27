@@ -1,14 +1,7 @@
 
-fixed post image
-	- to later have all posts just be the image at first like Pinterest
-
-
-added favorite model, added button to template, and added to routes, 
-got addition to favorites list working
-added html template for favorites page, it will be like home page but filter on posts from that user's favorites
-
 ______________________
 
-decide what to do with categories/search
-
+finish search route/sql query - took it out for now, will research further
+redo content - done
+github
 

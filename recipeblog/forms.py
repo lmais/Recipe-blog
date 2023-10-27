@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Optional
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Optional, Length
 from recipeblog.models import User
 from flask_login import current_user
 
@@ -65,3 +65,7 @@ class PostForm(FlaskForm):
     content = TextAreaField('Content', validators=[DataRequired()])
     recipe_picture = FileField('Recipe Picture', validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Post')
+
+class SearchForm(FlaskForm):
+    search = StringField('', validators=[Length(min=1)])
+    submit = SubmitField('Search')

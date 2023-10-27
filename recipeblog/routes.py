@@ -1,5 +1,5 @@
 from flask import render_template, url_for, flash, redirect, request, abort
-from recipeblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
+from recipeblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, SearchForm
 from recipeblog.models import User, Post, Favorite
 from recipeblog import app, db, bcrypt, logging
 from flask_login import login_user, current_user, logout_user, login_required
@@ -8,8 +8,8 @@ import os
 from PIL import Image
 from sqlalchemy import desc
 
-@ app.route("/")
-@ app.route("/home")
+@ app.route("/", methods=['GET', 'POST'])
+@ app.route("/home", methods=['GET', 'POST'])
 def home():
     posts = Post.query.order_by(Post.id.desc()).all()
     return render_template('home.html', posts=posts)
@@ -180,12 +180,19 @@ def favorites():
   
     return render_template('favorites.html', posts=fav_posts)
 
-@ app.route("/search_results", methods=['GET'])
-def search_results(search_text):   
-    search = db.session.query(Posts).filter(Post.content.contains(search_text)).all()
-    search_ids = []
-    for s in search:
-        search_ids.append(s.post_id)
-    fav_posts = db.session.query(Post).filter(Post.id.in_(fav_post_ids)).order_by(Post.id.desc())
-  
-    return render_template('search_results.html', posts=fav_posts)
+
+
+def search():
+    form = SearchForm()
+    if form.search.data:
+        search_text = form.search.data
+        search = db.session.query(Posts).filter(Post.content.contains(search_text)).all()
+        search_ids = []
+        for s in search:
+            search_ids.append(s.post_id)
+        search_posts = db.session.query(Post).filter(Post.id.in_(fav_post_ids)).order_by(Post.id.desc())
+    
+        return render_template('search_results.html', posts=search_posts) 
+
+
+    
