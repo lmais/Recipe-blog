@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect, request, abort
-from recipeblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
-from recipeblog.models import User, Post
+from recipeblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, SearchForm
+from recipeblog.models import User, Post, Favorite
 from recipeblog import app, db, bcrypt, logging
 from flask_login import login_user, current_user, logout_user, login_required
 import secrets
@@ -8,8 +8,8 @@ import os
 from PIL import Image
 from sqlalchemy import desc
 
-@ app.route("/")
-@ app.route("/home")
+@ app.route("/", methods=['GET', 'POST'])
+@ app.route("/home", methods=['GET', 'POST'])
 def home():
     posts = Post.query.order_by(Post.id.desc()).all()
     return render_template('home.html', posts=posts)
@@ -94,15 +94,14 @@ def account():
     return render_template('account.html', title='Account', image_file=image_file, form=form)
 
 def save_recipe_picture(recipe_picture):
-    print('SAVE RECIPE PICTURE WAS CALLED')
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(recipe_picture.filename)
     picture_fn = random_hex + f_ext
     picture_path = os.path.join(
         app.root_path, 'static/recipe_pics', picture_fn)
-    output_size = (125, 125)
+    output_size = (400, 400) ######################################(125,125)###########################################################
     i = Image.open(recipe_picture)
-    i.thumbnail(output_size)
+    #i.thumbnail(output_size)#################################################################################################
     i.save(picture_path)
     return picture_fn
 
@@ -116,8 +115,7 @@ def new_post():
             picture_file = save_recipe_picture(form.recipe_picture.data)
             post_image = picture_file
         post = Post(title=form.title.data,
-                    content=form.content.data, author=current_user, image=post_image, category=form.category.data)
-        #app.logger('test')
+                    content=form.content.data, author=current_user, image=post_image)
         db.session.add(post)
         db.session.commit()
         flash('Your post has been created!', 'success')
@@ -161,3 +159,40 @@ def delete_post(post_id):
     db.session.commit()
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('home'))
+
+@app.route("/post/<int:post_id>/favorite", methods=['GET','POST'])
+@login_required
+def favorite_post(post_id):
+    f = Favorite(post_id=post_id, user_id=current_user.id)
+    db.session.add(f)
+    db.session.commit()
+    flash('This post has been added to your favorites list!', 'success')
+    return redirect(url_for('home'))
+
+@ app.route("/favorites", methods=['GET'])
+@login_required
+def favorites():   
+    user_favorites = db.session.query(Favorite).filter(Favorite.user_id == current_user.id).all()
+    fav_post_ids = []
+    for f in user_favorites:
+        fav_post_ids.append(f.post_id)
+    fav_posts = db.session.query(Post).filter(Post.id.in_(fav_post_ids)).order_by(Post.id.desc())
+  
+    return render_template('favorites.html', posts=fav_posts)
+
+
+
+def search():
+    form = SearchForm()
+    if form.search.data:
+        search_text = form.search.data
+        search = db.session.query(Posts).filter(Post.content.contains(search_text)).all()
+        search_ids = []
+        for s in search:
+            search_ids.append(s.post_id)
+        search_posts = db.session.query(Post).filter(Post.id.in_(fav_post_ids)).order_by(Post.id.desc())
+    
+        return render_template('search_results.html', posts=search_posts) 
+
+
+    

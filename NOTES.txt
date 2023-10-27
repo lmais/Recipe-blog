@@ -1,4 +1,7 @@
-added optional Category field
-	- to later use to pull recipes by category
-fixed post image
-	- to later have all posts just be the image at first like Pinterest
+
+______________________
+
+finish search route/sql query - took it out for now, will research further
+redo content - done
+github
+
