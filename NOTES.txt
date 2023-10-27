@@ -1,7 +1,3 @@
 
-______________________
 
-finish search route/sql query - took it out for now, will research further
-redo content - done
-github
 
