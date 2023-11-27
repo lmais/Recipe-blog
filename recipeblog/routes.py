@@ -192,7 +192,7 @@ def search():
             search_ids.append(s.post_id)
         search_posts = db.session.query(Post).filter(Post.id.in_(fav_post_ids)).order_by(Post.id.desc())
     
-        return render_template('search_results.html', posts=search_posts) 
+        return render_template('home.html', posts=search_posts, form=form) 
 
 
     
